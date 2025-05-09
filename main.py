@@ -148,28 +148,43 @@ class F1FantasyPredictor:
                     self.current_constructor_ids[team_name] = row['constructorId']
                     break
 
-        # Find circuit by name
-        def find_circuit_by_name(self, circuit_name="Imola"):
-            for i, circuit in self.circuits.iterrows():
-                if circuit_name.lower() in circuit['name'].lower() or circuit_name.lower() in circuit[
-                    'location'].lower():
-                    return circuit
-                return None
+                # Find circuit by name
 
-        # Get the historical circuit performance
-        def get_circuit_historical_performance(self, circuit_id):
-            circuit_races = self.races[self.races['circuitId'] == circuit_id]
+    def find_circuit_by_name(self, circuit_name="Imola"):
+        for i, circuit in self.circuits.iterrows():
+            if circuit_name.lower() in circuit['name'].lower() or circuit_name.lower() in circuit[
+                'location'].lower():
+                return circuit
+            return None
 
-            race_ids = circuit_races['raceId'].tolist()
+            # Get the historical circuit performance
 
-            # Get all the results from these circuits
-            circuit_results = self.results[self.results['raceId'].isin(race_ids)]
+    def get_circuit_historical_performance(self, circuit_id):
+        circuit_races = self.races[self.races['circuitId'] == circuit_id]
 
-            # Join the driver and constructor data
-            circuit_results = circuit_results.merge(self.drivers[["driver_id", "forename", "surname"]], on="driver_id")
-            circuit_results = circuit_results.merge(self.constructors[["constructorId", "name"]], on="constructorId")
+        race_ids = circuit_races['raceId'].tolist()
 
-            # Add the race year
-            circuit_results = circuit_results.merge(self.races[["raceId", "year"]], on="raceId")
+        # Get all the results from these circuits
+        circuit_results = self.results[self.results['raceId'].isin(race_ids)]
 
-            # Sort by the year
+        # Join the driver and constructor data
+        circuit_results = circuit_results.merge(self.drivers[["driver_id", "forename", "surname"]],
+                                                        on="driver_id")
+        circuit_results = circuit_results.merge(self.constructors[["constructorId", "name"]],
+                                                        on="constructorId")
+
+        # Add the race year
+        circuit_results = circuit_results.merge(self.races[["raceId", "year"]], on="raceId")
+
+        # Sort by the year (DESC) and position (ASC)
+        circuit_results = circuit_results.sort_values(by=["year", "positionOrder"], ascending=[False, True])
+
+        # Analyze the recent forms of the drivers (5 races, increase later)
+
+    def analyze_recent_form(self, n_races=5):
+        recent_races = self.races.sort_values(by="date", ascending=False).head(n_races)
+        race_ids = recent_races['raceId'].tolist()
+
+        # Get results from the most recent races
+        recent_results = self.results[self.results['raceId'].isin(race_ids)]
+
