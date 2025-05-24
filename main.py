@@ -22,8 +22,8 @@ class F1FantasyPredictor:
         self.constructor_pricing = {
             "Mclaren": 30,
             "Mercedes": 25,
-            "Ferrari": 24,
-            "Redbull": 23,
+            "Ferrari": 23,
+            "Redbull": 24,
             "Williams": 20,
             "Racing Bulls": 16,
             "Haas": 15,
@@ -34,25 +34,25 @@ class F1FantasyPredictor:
 
         self.driver_pricing = {
             "Oscar": 30,
-            "Lando": 25,
-            "Max": 24,
+            "Lando": 24,
+            "Max": 25,
             "George": 23,
             "Kimi": 22,
             "Charles": 21,
             "Albon": 20,
             "Yuki": 16,
-            "Isack": 15,
-            "Lewis": 14,
-            "Pierre": 13,
-            "Carlos": 12,
-            "Bearman": 11,
-            "Ocon": 10,
-            "Alonso": 9,
-            "Stroll": 8.5,
-            "Lawson": 7,
+            "Isack": 13,
+            "Lewis": 15,
+            "Pierre": 12,
+            "Carlos": 14,
+            "Bearman": 10,
+            "Ocon": 9,
+            "Alonso": 11,
+            "Stroll": 7, # Update for new driver and their prices (Updated for monaco)
+            "Lawson": 8.5,
             "Hulk": 6.5,
-            "Bortoleto": 6,
-            "Doohan": 5.5
+            "Bortoleto": 5.5,
+            "Colapinto": 6
         }
 
         # Map the drivers to their full names and teams (2025 season assumption)
@@ -63,7 +63,7 @@ class F1FantasyPredictor:
             "George": {"full_name": "George Russell", "team": "Mercedes"},
             "Kimi": {"full_name": "Kimi Antonelli", "team": "Mercedes"},
             "Charles": {"full_name": "Charles Leclerc", "team": "Ferrari"},
-            "Albon": {"full_name": "Alex Albon", "team": "Williams"},
+            "Albon": {"full_name": "Alexander Albon", "team": "Williams"},
             "Yuki": {"full_name": "Yuki Tsunoda", "team": "Racing Bulls"},
             "Isack": {"full_name": "Isack Hadjar", "team": "Racing Bulls"},
             "Lewis": {"full_name": "Lewis Hamilton", "team": "Ferrari"},
@@ -74,9 +74,9 @@ class F1FantasyPredictor:
             "Alonso": {"full_name": "Fernando Alonso", "team": "Aston Martin"},
             "Stroll": {"full_name": "Lance Stroll", "team": "Aston Martin"},
             "Lawson": {"full_name": "Liam Lawson", "team": "Redbull"},
-            "Hulk": {"full_name": "Nico Hulkenberg", "team": "Stake"},
+            "Hulk": {"full_name": "Nico Hülkenberg", "team": "Stake"},
             "Bortoleto": {"full_name": "Gabriel Bortoleto", "team": "Stake"},
-            "Doohan": {"full_name": "Jack Doohan", "team": "Alpine"}
+            "Colapinto": {"full_name": "Franco Colapinto", "team": "Alpine"}
         }
 
         # Initialize empty DataFrames for loaded data
@@ -1185,61 +1185,135 @@ def run_fantasy_predictor(circuit_name=None):
     circuit_name : str
         Name of the circuit for which to make predictions (default: None, will prompt user)
     """
-    # Get available circuits
+    calendar_2025 = [
+        {"round": 1, "name": "Bahrain Grand Prix", "circuit": "Bahrain International Circuit", "location": "Sakhir",
+         "date": "March 2, 2025"},
+        {"round": 2, "name": "Saudi Arabian Grand Prix", "circuit": "Jeddah Corniche Circuit", "location": "Jeddah",
+         "date": "March 9, 2025"},
+        {"round": 3, "name": "Australian Grand Prix", "circuit": "Albert Park Circuit", "location": "Melbourne",
+         "date": "March 23, 2025"},
+        {"round": 4, "name": "Japanese Grand Prix", "circuit": "Suzuka International Racing Course",
+         "location": "Suzuka", "date": "April 6, 2025"},
+        {"round": 5, "name": "Chinese Grand Prix", "circuit": "Shanghai International Circuit", "location": "Shanghai",
+         "date": "April 20, 2025"},
+        {"round": 6, "name": "Miami Grand Prix", "circuit": "Miami International Autodrome", "location": "Miami",
+         "date": "May 4, 2025"},
+        {"round": 7, "name": "Emilia Romagna Grand Prix", "circuit": "Autodromo Enzo e Dino Ferrari",
+         "location": "Imola", "date": "May 18, 2025"},
+        {"round": 8, "name": "Monaco Grand Prix", "circuit": "Circuit de Monaco", "location": "Monte Carlo",
+         "date": "May 25, 2025"},
+        {"round": 9, "name": "Canadian Grand Prix", "circuit": "Circuit Gilles Villeneuve", "location": "Montreal",
+         "date": "June 8, 2025"},
+        {"round": 10, "name": "Spanish Grand Prix", "circuit": "Circuit de Barcelona-Catalunya",
+         "location": "Barcelona", "date": "June 22, 2025"},
+        {"round": 11, "name": "Austrian Grand Prix", "circuit": "Red Bull Ring", "location": "Spielberg",
+         "date": "July 6, 2025"},
+        {"round": 12, "name": "British Grand Prix", "circuit": "Silverstone Circuit", "location": "Silverstone",
+         "date": "July 13, 2025"},
+        {"round": 13, "name": "Hungarian Grand Prix", "circuit": "Hungaroring", "location": "Budapest",
+         "date": "July 27, 2025"},
+        {"round": 14, "name": "Belgian Grand Prix", "circuit": "Circuit de Spa-Francorchamps", "location": "Spa",
+         "date": "August 3, 2025"},
+        {"round": 15, "name": "Dutch Grand Prix", "circuit": "Circuit Zandvoort", "location": "Zandvoort",
+         "date": "August 24, 2025"},
+        {"round": 16, "name": "Italian Grand Prix", "circuit": "Autodromo Nazionale Monza", "location": "Monza",
+         "date": "September 7, 2025"},
+        {"round": 17, "name": "Azerbaijan Grand Prix", "circuit": "Baku City Circuit", "location": "Baku",
+         "date": "September 21, 2025"},
+        {"round": 18, "name": "Singapore Grand Prix", "circuit": "Marina Bay Street Circuit", "location": "Singapore",
+         "date": "October 5, 2025"},
+        {"round": 19, "name": "United States Grand Prix", "circuit": "Circuit of the Americas", "location": "Austin",
+         "date": "October 19, 2025"},
+        {"round": 20, "name": "Mexico City Grand Prix", "circuit": "Autódromo Hermanos Rodríguez",
+         "location": "Mexico City", "date": "October 26, 2025"},
+        {"round": 21, "name": "São Paulo Grand Prix", "circuit": "Autódromo José Carlos Pace", "location": "São Paulo",
+         "date": "November 9, 2025"},
+        {"round": 22, "name": "Las Vegas Grand Prix", "circuit": "Las Vegas Strip Circuit", "location": "Las Vegas",
+         "date": "November 23, 2025"},
+        {"round": 23, "name": "Qatar Grand Prix", "circuit": "Losail International Circuit", "location": "Lusail",
+         "date": "November 30, 2025"},
+        {"round": 24, "name": "Abu Dhabi Grand Prix", "circuit": "Yas Marina Circuit", "location": "Abu Dhabi",
+         "date": "December 7, 2025"}
+    ]
+
+    # Get available circuits from database if possible
     try:
         circuits_df = pd.read_csv('./circuits.csv')
         available_circuits = sorted(list(set([circuit['name'] for _, circuit in circuits_df.iterrows()])))
     except Exception:
-        # Default list if we can't read the circuit file
-        available_circuits = [
-            "Albert Park", "Autodromo Enzo e Dino Ferrari", "Silverstone", "Circuit de Monaco",
-            "Circuit de Barcelona-Catalunya", "Circuit Gilles Villeneuve", "Red Bull Ring",
-            "Hungaroring", "Circuit de Spa-Francorchamps", "Monza", "Marina Bay",
-            "Suzuka", "Circuit of the Americas", "Autódromo José Carlos Pace",
-            "Yas Marina Circuit", "Jeddah Corniche Circuit", "Losail International Circuit",
-            "Miami International Autodrome", "Las Vegas Strip Circuit", "Baku City Circuit"
-        ]
+        # Use hardcoded list of major circuits if we can't read the circuit file
+        available_circuits = [race["circuit"] for race in calendar_2025]
 
     # Let user select a circuit if not provided
     if circuit_name is None:
-        print("\nAvailable circuits:")
-        for i, circuit in enumerate(available_circuits[:15]):  # Show first 15 to avoid too long of a list
-            print(f"{i + 1}. {circuit}")
-        print("... and more")
+        print("\n2025 F1 CALENDAR")
+        print("=" * 80)
+        print(f"{'Round':<7}{'Grand Prix':<30}{'Circuit':<35}{'Date':<15}")
+        print("-" * 80)
+        for race in calendar_2025:
+            print(f"{race['round']:<7}{race['name']:<30}{race['circuit']:<35}{race['date']:<15}")
+        print("=" * 80)
 
         while True:
             try:
-                choice = input("\nEnter circuit name or number (or 'list' to see all circuits): ")
+                choice = input("\nEnter race number, circuit name, or 'next' for the upcoming race: ")
 
-                if choice.lower() == 'list':
-                    for i, circuit in enumerate(available_circuits):
-                        print(f"{i + 1}. {circuit}")
-                    continue
+                if choice.lower() == 'next':
+                    # Find the next race based on today's date
+                    from datetime import datetime
+                    current_date = datetime.now()
 
-                # Check if input is a number
-                if choice.isdigit():
-                    idx = int(choice) - 1
-                    if 0 <= idx < len(available_circuits):
-                        circuit_name = available_circuits[idx]
+                    # Find next race after current date
+                    next_race = None
+                    for race in calendar_2025:
+                        race_date = datetime.strptime(race["date"], "%B %d, %Y")
+                        if race_date > current_date:
+                            next_race = race
+                            break
+
+                    if next_race:
+                        circuit_name = next_race["circuit"]
+                        print(f"Selected upcoming race: {next_race['name']} at {circuit_name} on {next_race['date']}")
                         break
                     else:
-                        print(f"Invalid number. Please enter a number between 1 and {len(available_circuits)}")
+                        print("No upcoming races found in the 2025 calendar.")
+                        circuit_name = calendar_2025[0]["circuit"]  # Default to first race
+                        break
+
+                # Check if input is a round number
+                if choice.isdigit():
+                    round_num = int(choice)
+                    if 1 <= round_num <= len(calendar_2025):
+                        selected_race = calendar_2025[round_num - 1]
+                        circuit_name = selected_race["circuit"]
+                        print(f"Selected: {selected_race['name']} at {circuit_name}")
+                        break
+                    else:
+                        print(f"Invalid round number. Please enter a number between 1 and {len(calendar_2025)}")
                 else:
-                    # Try to find a match in the circuit names
-                    matches = [c for c in available_circuits if choice.lower() in c.lower()]
+                    # Try to find a match in the grand prix or circuit names
+                    matches = []
+                    for race in calendar_2025:
+                        if (choice.lower() in race["name"].lower() or
+                                choice.lower() in race["circuit"].lower() or
+                                choice.lower() in race["location"].lower()):
+                            matches.append(race)
+
                     if len(matches) == 1:
-                        circuit_name = matches[0]
+                        circuit_name = matches[0]["circuit"]
+                        print(f"Selected: {matches[0]['name']} at {circuit_name}")
                         break
                     elif len(matches) > 1:
-                        print("Multiple matches found. Please be more specific or use a number:")
+                        print("Multiple matches found. Please select one:")
                         for i, match in enumerate(matches):
-                            print(f"{i + 1}. {match}")
+                            print(f"{i + 1}. {match['name']} at {match['circuit']}")
                         sub_choice = input("Enter the number of your choice: ")
                         if sub_choice.isdigit() and 0 < int(sub_choice) <= len(matches):
-                            circuit_name = matches[int(sub_choice) - 1]
+                            circuit_name = matches[int(sub_choice) - 1]["circuit"]
+                            print(f"Selected: {matches[int(sub_choice) - 1]['name']} at {circuit_name}")
                             break
                     else:
-                        print("No matching circuit found. Please try again or choose from the list.")
+                        print("No matching race found. Please try again or enter a round number.")
             except Exception as e:
                 print(f"Error: {e}. Please try again.")
 
@@ -1249,7 +1323,7 @@ def run_fantasy_predictor(circuit_name=None):
         print(f"Using default circuit: {circuit_name}")
 
     print(f"\n{'=' * 70}")
-    print(f"F1 FANTASY PREDICTOR - {circuit_name.upper()} GP")
+    print(f"F1 FANTASY PREDICTOR - {circuit_name.upper()}")
     print(f"{'=' * 70}\n")
 
     # Initialize the predictor
@@ -1280,13 +1354,13 @@ def run_fantasy_predictor(circuit_name=None):
 
     # Predict bonus opportunities
     print("\nStep 6: Analyzing bonus prediction opportunities...")
-    bonus_predictions = predictor.predict_bonus_opportunities()
+    bonus_predictions = predictor.predict_bonus_opportunities(circuit_name)
 
     # Generate comprehensive report
     print("\nStep 7: Generating final fantasy team report...\n")
 
     print("=" * 70)
-    print(f"OPTIMAL F1 FANTASY TEAM - {circuit_name.upper()} GP")
+    print(f"OPTIMAL F1 FANTASY TEAM - {circuit_name}")
     print("=" * 70)
 
     print("\n🏎️ SELECTED DRIVERS:")
@@ -1348,4 +1422,4 @@ def run_fantasy_predictor(circuit_name=None):
 
 
 if __name__ == "__main__":
-    run_fantasy_predictor()  # Will prompt user for circuit selection
+    run_fantasy_predictor()  # Will prompt user for circuit selection using 2025 calendar
