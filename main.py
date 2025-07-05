@@ -20,38 +20,38 @@ class F1FantasyPredictor:
 
         # Store pricing for constructors and drivers
         self.constructor_pricing = {
-            "Mclaren": 30,
-            "Mercedes": 25,
-            "Ferrari": 23,
-            "Redbull": 24,
-            "Williams": 20,
-            "Racing Bulls": 16,
-            "Haas": 15,
-            "Alpine": 14,
-            "Aston Martin": 13,
-            "Stake": 12
+            "Mclaren": 32,
+            "Mercedes": 24,
+            "Ferrari": 27,
+            "Redbull": 23,
+            "Williams": 15,
+            "Racing Bulls": 20,
+            "Haas": 13,
+            "Alpine": 12,
+            "Aston Martin": 14,
+            "Stake": 16
         }
 
         self.driver_pricing = {
-            "Oscar": 30,
-            "Lando": 24,
+            "Oscar": 32,
+            "Lando": 27,
             "Max": 25,
-            "George": 23,
-            "Kimi": 22,
-            "Charles": 21,
-            "Albon": 20,
-            "Yuki": 16,
-            "Isack": 13,
-            "Lewis": 15,
-            "Pierre": 12,
-            "Carlos": 14,
-            "Bearman": 10,
-            "Ocon": 9,
-            "Alonso": 11,
-            "Stroll": 7, # Update for new driver and their prices (Updated for monaco)
-            "Lawson": 8.5,
-            "Hulk": 6.5,
-            "Bortoleto": 5.5,
+            "George": 22,
+            "Kimi": 20,
+            "Charles": 23,
+            "Albon": 15,
+            "Yuki": 8.5,
+            "Isack": 14,
+            "Lewis": 21,
+            "Pierre": 6.5,
+            "Carlos": 9,
+            "Bearman": 7,
+            "Ocon": 12,
+            "Alonso": 16,
+            "Stroll": 5.5,  # Update for new driver and their prices (Updated for Britan)
+            "Lawson": 10,
+            "Hulk": 13,
+            "Bortoleto": 11,
             "Colapinto": 6
         }
 
@@ -414,7 +414,7 @@ class F1FantasyPredictor:
 
             # Calculate predicted points with track factor
             base_points = (
-                                      recent_avg_points * 0.6 + track_avg_points * 0.4) * 2  # Constructors typically get double points
+                                  recent_avg_points * 0.6 + track_avg_points * 0.4) * 2  # Constructors typically get double points
             predicted_points = base_points * track_factor
 
             # Calculate value (points per million)
@@ -509,7 +509,7 @@ class F1FantasyPredictor:
 
                             # Find constructor and approximate price based on standings
                             constructor = \
-                            self.constructors[self.constructors['constructorId'] == constructor_id].iloc[0]['name']
+                                self.constructors[self.constructors['constructorId'] == constructor_id].iloc[0]['name']
 
                             # Approximate price based on performance
                             driver_price = max(30 - standings_position, 5)  # Higher ranking -> higher price
@@ -1186,15 +1186,15 @@ def run_fantasy_predictor(circuit_name=None):
         Name of the circuit for which to make predictions (default: None, will prompt user)
     """
     calendar_2025 = [
-        {"round": 1, "name": "Bahrain Grand Prix", "circuit": "Bahrain International Circuit", "location": "Sakhir",
-         "date": "March 2, 2025"},
-        {"round": 2, "name": "Saudi Arabian Grand Prix", "circuit": "Jeddah Corniche Circuit", "location": "Jeddah",
-         "date": "March 9, 2025"},
-        {"round": 3, "name": "Australian Grand Prix", "circuit": "Albert Park Circuit", "location": "Melbourne",
+        {"round": 1, "name": "Australian Grand Prix", "circuit": "Albert Park Circuit", "location": "Melbourne",
+         "date": "March 16, 2025"},
+        {"round": 2, "name": "Chinese Grand Prix", "circuit": "Shanghai International Circuit", "location": "Shanghai",
          "date": "March 23, 2025"},
-        {"round": 4, "name": "Japanese Grand Prix", "circuit": "Suzuka International Racing Course",
+        {"round": 3, "name": "Japanese Grand Prix", "circuit": "Suzuka International Racing Course",
          "location": "Suzuka", "date": "April 6, 2025"},
-        {"round": 5, "name": "Chinese Grand Prix", "circuit": "Shanghai International Circuit", "location": "Shanghai",
+        {"round": 4, "name": "Bahrain Grand Prix", "circuit": "Bahrain International Circuit", "location": "Sakhir",
+         "date": "April 13, 2025"},
+        {"round": 5, "name": "Saudi Arabian Grand Prix", "circuit": "Jeddah Corniche Circuit", "location": "Jeddah",
          "date": "April 20, 2025"},
         {"round": 6, "name": "Miami Grand Prix", "circuit": "Miami International Autodrome", "location": "Miami",
          "date": "May 4, 2025"},
@@ -1202,20 +1202,20 @@ def run_fantasy_predictor(circuit_name=None):
          "location": "Imola", "date": "May 18, 2025"},
         {"round": 8, "name": "Monaco Grand Prix", "circuit": "Circuit de Monaco", "location": "Monte Carlo",
          "date": "May 25, 2025"},
-        {"round": 9, "name": "Canadian Grand Prix", "circuit": "Circuit Gilles Villeneuve", "location": "Montreal",
-         "date": "June 8, 2025"},
-        {"round": 10, "name": "Spanish Grand Prix", "circuit": "Circuit de Barcelona-Catalunya",
-         "location": "Barcelona", "date": "June 22, 2025"},
+        {"round": 9, "name": "Spanish Grand Prix", "circuit": "Circuit de Barcelona-Catalunya",
+         "location": "Barcelona", "date": "June 1, 2025"},
+        {"round": 10, "name": "Canadian Grand Prix", "circuit": "Circuit Gilles Villeneuve", "location": "Montreal",
+         "date": "June 15, 2025"},
         {"round": 11, "name": "Austrian Grand Prix", "circuit": "Red Bull Ring", "location": "Spielberg",
-         "date": "July 6, 2025"},
+         "date": "June 29, 2025"},
         {"round": 12, "name": "British Grand Prix", "circuit": "Silverstone Circuit", "location": "Silverstone",
-         "date": "July 13, 2025"},
-        {"round": 13, "name": "Hungarian Grand Prix", "circuit": "Hungaroring", "location": "Budapest",
+         "date": "July 6, 2025"},
+        {"round": 13, "name": "Belgian Grand Prix", "circuit": "Circuit de Spa-Francorchamps", "location": "Spa",
          "date": "July 27, 2025"},
-        {"round": 14, "name": "Belgian Grand Prix", "circuit": "Circuit de Spa-Francorchamps", "location": "Spa",
+        {"round": 14, "name": "Hungarian Grand Prix", "circuit": "Hungaroring", "location": "Budapest",
          "date": "August 3, 2025"},
         {"round": 15, "name": "Dutch Grand Prix", "circuit": "Circuit Zandvoort", "location": "Zandvoort",
-         "date": "August 24, 2025"},
+         "date": "August 31, 2025"},
         {"round": 16, "name": "Italian Grand Prix", "circuit": "Autodromo Nazionale Monza", "location": "Monza",
          "date": "September 7, 2025"},
         {"round": 17, "name": "Azerbaijan Grand Prix", "circuit": "Baku City Circuit", "location": "Baku",
@@ -1229,7 +1229,7 @@ def run_fantasy_predictor(circuit_name=None):
         {"round": 21, "name": "São Paulo Grand Prix", "circuit": "Autódromo José Carlos Pace", "location": "São Paulo",
          "date": "November 9, 2025"},
         {"round": 22, "name": "Las Vegas Grand Prix", "circuit": "Las Vegas Strip Circuit", "location": "Las Vegas",
-         "date": "November 23, 2025"},
+         "date": "November 22, 2025"},
         {"round": 23, "name": "Qatar Grand Prix", "circuit": "Losail International Circuit", "location": "Lusail",
          "date": "November 30, 2025"},
         {"round": 24, "name": "Abu Dhabi Grand Prix", "circuit": "Yas Marina Circuit", "location": "Abu Dhabi",
