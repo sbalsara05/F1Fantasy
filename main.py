@@ -22,37 +22,37 @@ class F1FantasyPredictor:
         self.constructor_pricing = {
             "Mclaren": 32,
             "Mercedes": 24,
-            "Ferrari": 27,
-            "Redbull": 23,
-            "Williams": 15,
-            "Racing Bulls": 20,
+            "Ferrari": 20,
+            "Redbull": 27,
+            "Williams": 16,
+            "Racing Bulls": 16,
             "Haas": 13,
             "Alpine": 12,
             "Aston Martin": 14,
-            "Stake": 16
+            "Stake": 15
         }
 
         self.driver_pricing = {
-            "Oscar": 32,
-            "Lando": 27,
-            "Max": 25,
-            "George": 22,
-            "Kimi": 20,
-            "Charles": 23,
-            "Albon": 15,
-            "Yuki": 8.5,
+            "Oscar": 29,
+            "Lando": 30,
+            "Max": 32,
+            "George": 26,
+            "Kimi": 22,
+            "Charles": 25,
+            "Albon": 12,
+            "Yuki": 13,
             "Isack": 14,
-            "Lewis": 21,
-            "Pierre": 6.5,
-            "Carlos": 9,
-            "Bearman": 7,
-            "Ocon": 12,
-            "Alonso": 16,
-            "Stroll": 5.5,  # Update for new driver and their prices (Updated for Britan)
-            "Lawson": 10,
-            "Hulk": 13,
-            "Bortoleto": 11,
-            "Colapinto": 6
+            "Lewis": 18,
+            "Pierre": 7,
+            "Carlos": 24,
+            "Bearman": 10,
+            "Ocon": 8,
+            "Alonso": 11,
+            "Stroll": 7.5,  # Update for new driver and their prices (Updated for Hungary)
+            "Lawson": 20,
+            "Hulk": 9,
+            "Bortoleto": 16,
+            "Colapinto": 6.5
         }
 
         # Map the drivers to their full names and teams (2025 season assumption)
@@ -64,7 +64,7 @@ class F1FantasyPredictor:
             "Kimi": {"full_name": "Kimi Antonelli", "team": "Mercedes"},
             "Charles": {"full_name": "Charles Leclerc", "team": "Ferrari"},
             "Albon": {"full_name": "Alexander Albon", "team": "Williams"},
-            "Yuki": {"full_name": "Yuki Tsunoda", "team": "Racing Bulls"},
+            "Yuki": {"full_name": "Yuki Tsunoda", "team": "Redbull"},
             "Isack": {"full_name": "Isack Hadjar", "team": "Racing Bulls"},
             "Lewis": {"full_name": "Lewis Hamilton", "team": "Ferrari"},
             "Pierre": {"full_name": "Pierre Gasly", "team": "Alpine"},
@@ -73,7 +73,7 @@ class F1FantasyPredictor:
             "Ocon": {"full_name": "Esteban Ocon", "team": "Haas"},
             "Alonso": {"full_name": "Fernando Alonso", "team": "Aston Martin"},
             "Stroll": {"full_name": "Lance Stroll", "team": "Aston Martin"},
-            "Lawson": {"full_name": "Liam Lawson", "team": "Redbull"},
+            "Lawson": {"full_name": "Liam Lawson", "team": "Racing Bulls"},
             "Hulk": {"full_name": "Nico Hülkenberg", "team": "Stake"},
             "Bortoleto": {"full_name": "Gabriel Bortoleto", "team": "Stake"},
             "Colapinto": {"full_name": "Franco Colapinto", "team": "Alpine"}
@@ -414,7 +414,7 @@ class F1FantasyPredictor:
 
             # Calculate predicted points with track factor
             base_points = (
-                                  recent_avg_points * 0.6 + track_avg_points * 0.4) * 2  # Constructors typically get double points
+                                      recent_avg_points * 0.6 + track_avg_points * 0.4) * 2  # Constructors typically get double points
             predicted_points = base_points * track_factor
 
             # Calculate value (points per million)
@@ -509,7 +509,7 @@ class F1FantasyPredictor:
 
                             # Find constructor and approximate price based on standings
                             constructor = \
-                                self.constructors[self.constructors['constructorId'] == constructor_id].iloc[0]['name']
+                            self.constructors[self.constructors['constructorId'] == constructor_id].iloc[0]['name']
 
                             # Approximate price based on performance
                             driver_price = max(30 - standings_position, 5)  # Higher ranking -> higher price
@@ -1185,6 +1185,7 @@ def run_fantasy_predictor(circuit_name=None):
     circuit_name : str
         Name of the circuit for which to make predictions (default: None, will prompt user)
     """
+    # 2025 F1 Calendar (projected)
     calendar_2025 = [
         {"round": 1, "name": "Australian Grand Prix", "circuit": "Albert Park Circuit", "location": "Melbourne",
          "date": "March 16, 2025"},
@@ -1202,8 +1203,8 @@ def run_fantasy_predictor(circuit_name=None):
          "location": "Imola", "date": "May 18, 2025"},
         {"round": 8, "name": "Monaco Grand Prix", "circuit": "Circuit de Monaco", "location": "Monte Carlo",
          "date": "May 25, 2025"},
-        {"round": 9, "name": "Spanish Grand Prix", "circuit": "Circuit de Barcelona-Catalunya",
-         "location": "Barcelona", "date": "June 1, 2025"},
+        {"round": 9, "name": "Spanish Grand Prix", "circuit": "Circuit de Barcelona-Catalunya", "location": "Barcelona",
+         "date": "June 1, 2025"},
         {"round": 10, "name": "Canadian Grand Prix", "circuit": "Circuit Gilles Villeneuve", "location": "Montreal",
          "date": "June 15, 2025"},
         {"round": 11, "name": "Austrian Grand Prix", "circuit": "Red Bull Ring", "location": "Spielberg",
