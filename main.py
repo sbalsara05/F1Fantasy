@@ -21,38 +21,38 @@ class F1FantasyPredictor:
         # Store pricing for constructors and drivers
         self.constructor_pricing = {
             "Mclaren": 32,
-            "Mercedes": 24,
-            "Ferrari": 20,
+            "Mercedes": 23,
+            "Ferrari": 24,
             "Redbull": 27,
-            "Williams": 16,
-            "Racing Bulls": 16,
-            "Haas": 13,
+            "Williams": 14,
+            "Racing Bulls": 15,
+            "Haas": 16,
             "Alpine": 12,
-            "Aston Martin": 14,
-            "Stake": 15
+            "Aston Martin": 20,
+            "Stake": 13
         }
 
         self.driver_pricing = {
             "Oscar": 29,
             "Lando": 30,
             "Max": 32,
-            "George": 26,
-            "Kimi": 22,
-            "Charles": 25,
-            "Albon": 12,
-            "Yuki": 13,
-            "Isack": 14,
-            "Lewis": 18,
-            "Pierre": 7,
-            "Carlos": 24,
-            "Bearman": 10,
+            "George": 25,
+            "Kimi": 20,
+            "Charles": 26,
+            "Albon": 10,
+            "Yuki": 22,
+            "Isack": 12,
+            "Lewis": 24,
+            "Pierre": 6.5,
+            "Carlos": 13,
+            "Bearman": 18,
             "Ocon": 8,
-            "Alonso": 11,
-            "Stroll": 7.5,  # Update for new driver and their prices (Updated for Hungary)
-            "Lawson": 20,
-            "Hulk": 9,
-            "Bortoleto": 16,
-            "Colapinto": 6.5
+            "Alonso": 16,
+            "Stroll": 9,  # Update for new driver and their prices (Updated for Mexico)
+            "Lawson": 14,
+            "Hulk": 11,
+            "Bortoleto": 7,
+            "Colapinto": 7.5
         }
 
         # Map the drivers to their full names and teams (2025 season assumption)
